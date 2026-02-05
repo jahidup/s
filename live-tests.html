@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Tests - Sankalp Shiksha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #1a6fc4 0%, #2a8bf2 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .filter-select {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #2a8bf2;
+        }
+        
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .tests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .test-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .test-card.featured {
+            border: 2px solid #ffd700;
+            position: relative;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ffd700;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+        
+        .test-header {
+            padding: 25px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .test-subject {
+            color: #2a8bf2;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .test-name {
+            font-size: 1.3rem;
+            color: #1a3c6e;
+            margin-bottom: 15px;
+        }
+        
+        .test-meta {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .test-body {
+            padding: 25px;
+        }
+        
+        .test-details {
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-label {
+            color: #666;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+        }
+        
+        .test-footer {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .test-status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status-ongoing {
+            background: #e7f5e9;
+            color: #27ae60;
+        }
+        
+        .status-ending {
+            background: #ffebee;
+            color: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 50px 0;
+        }
+        
+        .page-link {
+            padding: 10px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .page-link:hover,
+        .page-link.active {
+            background: #2a8bf2;
+            color: white;
+            border-color: #2a8bf2;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="https://via.placeholder.com/40x40/1a6fc4/ffffff?text=S" alt="Sankalp Shiksha Logo">
+                    <div class="logo-text">
+                        <h2>Sankalp Shiksha</h2>
+                        <p>Test Portal</p>
+                    </div>
+                </a>
+                
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="live-tests.html" class="active"><i class="fas fa-play-circle"></i> Live Tests</a></li>
+                        <li><a href="upcoming-tests.html"><i class="fas fa-calendar-alt"></i> Upcoming</a></li>
+                        <li><a href="tests.html"><i class="fas fa-list"></i> All Tests</a></li>
+                        <li><a href="results.html"><i class="fas fa-chart-line"></i> Results</a></li>
+                        <li class="dropdown">
+                            <a href="#"><i class="fas fa-user"></i> John Doe <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="profile.html"><i class="fas fa-user-circle"></i> My Profile</a></li>
+                                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                                <li><hr></li>
+                                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Live Tests</h1>
+            <p class="page-subtitle">Active tests you can take right now</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <select class="filter-select">
+                        <option value="">All Subjects</option>
+                        <option value="math">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="english">English</option>
+                        <option value="physics">Physics</option>
+                        <option value="chemistry">Chemistry</option>
+                    </select>
+                    
+                    <select class="filter-select">
+                        <option value="">All Classes</option>
+                        <option value="9">Class 9</option>
+                        <option value="10">Class 10</option>
+                        <option value="11">Class 11</option>
+                        <option value="12">Class 12</option>
+                    </select>
+                    
+                    <select class="filter-select">
+                        <option value="">Sort By</option>
+                        <option value="ending">Ending Soon</option>
+                        <option value="new">Newest</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                    
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search tests...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tests Grid -->
+            <div class="tests-grid">
+                <!-- Test Card 1 -->
+                <div class="test-card featured">
+                    <div class="featured-badge">Featured</div>
+                    <div class="test-header">
+                        <span class="test-subject">Mathematics</span>
+                        <h3 class="test-name">Weekly Test - December</h3>
+                        <div class="test-meta">
+                            <span><i class="far fa-clock"></i> 60 mins</span>
+                            <span><i class="far fa-question-circle"></i> 30 Questions</span>
+                            <span><i class="fas fa-users"></i> 245 taking now</span>
+                        </div>
+                    </div>
+                    
+                    <div class="test-body">
+                        <div class="test-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">60 minutes</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Questions</span>
+                                <span class="detail-value">30 MCQs</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Marks</span>
+                                <span class="detail-value">100</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Ends In</span>
+                                <span class="detail-value ending-soon">2 hours 30 mins</span>
+                            </div>
+                        </div>
+                        
+                        <p>Complete test covering all chapters from this month. Includes detailed solutions and performance analysis.</p>
+                    </div>
+                    
+                    <div class="test-footer">
+                        <div class="test-actions">
+                            <a href="test-portal.html" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Start Test
+                            </a>
+                            <span class="test-status status-ongoing">Live Now</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Card 2 -->
+                <div class="test-card">
+                    <div class="test-header">
+                        <span class="test-subject">Science</span>
+                        <h3 class="test-name">Physics Practice Test</h3>
+                        <div class="test-meta">
+                            <span><i class="far fa-clock"></i> 45 mins</span>
+                            <span><i class="far fa-question-circle"></i> 25 Questions</span>
+                            <span><i class="fas fa-users"></i> 189 taking now</span>
+                        </div>
+                    </div>
+                    
+                    <div class="test-body">
+                        <div class="test-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">45 minutes</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Questions</span>
+                                <span class="detail-value">25 MCQs</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Marks</span>
+                                <span class="detail-value">75</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Ends In</span>
+                                <span class="detail-value">5 hours 45 mins</span>
+                            </div>
+                        </div>
+                        
+                        <p>Focus on Newton's Laws and Thermodynamics. Instant results with detailed explanations.</p>
+                    </div>
+                    
+                    <div class="test-footer">
+                        <div class="test-actions">
+                            <a href="test-portal.html" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Start Test
+                            </a>
+                            <span class="test-status status-ongoing">Live Now</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Card 3 -->
+                <div class="test-card">
+                    <div class="test-header">
+                        <span class="test-subject">Chemistry</span>
+                        <h3 class="testname">Chemical Reactions Quiz</h3>
+                        <div class="test-meta">
+                            <span><i class="far fa-clock"></i> 30 mins</span>
+                            <span><i class="far fa-question-circle"></i> 20 Questions</span>
+                            <span><i class="fas fa-users"></i> 156 taking now</span>
+                        </div>
+                    </div>
+                    
+                    <div class="test-body">
+                        <div class="test-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">30 minutes</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Questions</span>
+                                <span class="detail-value">20 MCQs</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Marks</span>
+                                <span class="detail-value">60</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Ends In</span>
+                                <span class="detail-value ending-soon">45 mins</span>
+                            </div>
+                        </div>
+                        
+                        <p>Quick quiz on chemical reactions and equations. Perfect for quick revision.</p>
+                    </div>
+                    
+                    <div class="test-footer">
+                        <div class="test-actions">
+                            <a href="test-portal.html" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Start Test
+                            </a>
+                            <span class="test-status status-ending">Ending Soon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Card 4 -->
+                <div class="test-card">
+                    <div class="test-header">
+                        <span class="test-subject">Mathematics</span>
+                        <h3 class="test-name">Algebra Advanced Test</h3>
+                        <div class="test-meta">
+                            <span><i class="far fa-clock"></i> 90 mins</span>
+                            <span><i class="far fa-question-circle"></i> 40 Questions</span>
+                            <span><i class="fas fa-users"></i> 89 taking now</span>
+                        </div>
+                    </div>
+                    
+                    <div class="test-body">
+                        <div class="test-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value">90 minutes</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Questions</span>
+                                <span class="detail-value">40 MCQs</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Marks</span>
+                                <span class="detail-value">120</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Ends In</span>
+                                <span class="detail-value">1 day 2 hours</span>
+                            </div>
+                        </div>
+                        
+                        <p>Advanced algebra concepts for Class 11-12. Includes complex numbers and quadratic equations.</p>
+                    </div>
+                    
+                    <div class="test-footer">
+                        <div class="test-actions">
+                            <a href="test-portal.html" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Start Test
+                            </a>
+                            <span class="test-status status-ongoing">Live Now</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State (if no tests) -->
+            <!--
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="far fa-calendar-times"></i>
+                </div>
+                <h3>No Live Tests Available</h3>
+                <p>There are no active tests at the moment. Check back later or view upcoming tests.</p>
+                <a href="upcoming-tests.html" class="btn btn-primary mt-20">
+                    View Upcoming Tests
+                </a>
+            </div>
+            -->
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="page-link"><i class="fas fa-chevron-left"></i></a>
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">4</a>
+                <a href="#" class="page-link"><i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <!-- Info Box -->
+            <div class="announcement-card" style="margin-top: 40px;">
+                <h4><i class="fas fa-info-circle"></i> Important Information</h4>
+                <p>• All tests must be completed before the end time. Late submissions will not be accepted.</p>
+                <p>• You can pause and resume tests within the allotted time.</p>
+                <p>• Results are available immediately after test completion.</p>
+                <p>• For any technical issues, contact support immediately.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sankalp Shiksha</h3>
+                    <p>Empowering students through quality education and assessment since 2010.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Dashboard</a></li>
+                        <li><a href="live-tests.html">Live Tests</a></li>
+                        <li><a href="results.html">Results</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@sankalpshiksha.com</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Delhi, India</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sankalp Shiksha Test Portal. All rights reserved.</p>
+                <p>Designed for students, by educators.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Update ending times
+        function updateEndingTimes() {
+            const endingElements = document.querySelectorAll('.ending-soon');
+            endingElements.forEach(element => {
+                // Simulate time countdown
+                const text = element.textContent;
+                if (text.includes('mins')) {
+                    // This would be replaced with actual countdown logic
+                    element.style.color = '#e74c3c';
+                    element.style.fontWeight = '600';
+                }
+            });
+        }
+        
+        updateEndingTimes();
+        
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        const testCards = document.querySelectorAll('.test-card');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            testCards.forEach(card => {
+                const testName = card.querySelector('.test-name').textContent.toLowerCase();
+                const testSubject = card.querySelector('.test-subject').textContent.toLowerCase();
+                
+                if (testName.includes(searchTerm) || testSubject.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
