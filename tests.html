@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tests - Sankalp Shiksha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab:hover {
+            background: #f8f9fa;
+        }
+        
+        .tab.active {
+            background: #e8f4fc;
+            border-bottom: 3px solid #2a8bf2;
+            color: #2a8bf2;
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .test-category {
+            margin-bottom: 40px;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            color: #1a3c6e;
+        }
+        
+        .test-count {
+            background: #e8f4fc;
+            color: #2a8bf2;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="https://via.placeholder.com/40x40/1a6fc4/ffffff?text=S" alt="Sankalp Shiksha Logo">
+                    <div class="logo-text">
+                        <h2>Sankalp Shiksha</h2>
+                        <p>Test Portal</p>
+                    </div>
+                </a>
+                
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="live-tests.html"><i class="fas fa-play-circle"></i> Live Tests</a></li>
+                        <li><a href="upcoming-tests.html"><i class="fas fa-calendar-alt"></i> Upcoming</a></li>
+                        <li><a href="tests.html" class="active"><i class="fas fa-list"></i> All Tests</a></li>
+                        <li><a href="results.html"><i class="fas fa-chart-line"></i> Results</a></li>
+                        <li class="dropdown">
+                            <a href="#"><i class="fas fa-user"></i> John Doe <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="profile.html"><i class="fas fa-user-circle"></i> My Profile</a></li>
+                                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                                <li><hr></li>
+                                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">
+        <div class="container">
+            <h1 class="page-title">All Tests</h1>
+            <p class="page-subtitle">Browse through our complete test catalog</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="all">All Tests</div>
+                <div class="tab" data-tab="free">Free Tests</div>
+                <div class="tab" data-tab="premium">Premium</div>
+                <div class="tab" data-tab="mock">Mock Tests</div>
+                <div class="tab" data-tab="practice">Practice</div>
+            </div>
+
+            <!-- Filters (same as live-tests.html) -->
+            <div class="filters">
+                <div class="filter-group">
+                    <select class="filter-select">
+                        <option value="">All Subjects</option>
+                        <option value="math">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="english">English</option>
+                    </select>
+                    
+                    <select class="filter-select">
+                        <option value="">All Classes</option>
+                        <option value="9">Class 9</option>
+                        <option value="10">Class 10</option>
+                    </select>
+                    
+                    <select class="filter-select">
+                        <option value="">Sort By</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="new">Newest</option>
+                        <option value="rated">Highest Rated</option>
+                    </select>
+                    
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search tests...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: All Tests -->
+            <div class="tab-content active" id="tab-all">
+                <!-- Mathematics Category -->
+                <div class="test-category">
+                    <div class="category-header">
+                        <h2 class="category-title">Mathematics Tests</h2>
+                        <span class="test-count">15 Tests</span>
+                    </div>
+                    
+                    <div class="tests-grid">
+                        <!-- Test cards from live-tests.html -->
+                        <!-- Copy test cards from live-tests.html here -->
+                    </div>
+                </div>
+
+                <!-- Science Category -->
+                <div class="test-category">
+                    <div class="category-header">
+                        <h2 class="category-title">Science Tests</h2>
+                        <span class="test-count">12 Tests</span>
+                    </div>
+                    
+                    <div class="tests-grid">
+                        <!-- Test cards -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other tab contents would be similar -->
+            
+            <!-- Test Series Section -->
+            <div class="section-header" style="margin: 60px 0 30px;">
+                <h2>Featured Test Series</h2>
+                <p>Comprehensive test series for complete preparation</p>
+            </div>
+            
+            <div class="series-grid">
+                <!-- Test series cards -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sankalp Shiksha</h3>
+                    <p>Empowering students through quality education and assessment since 2010.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Dashboard</a></li>
+                        <li><a href="live-tests.html">Live Tests</a></li>
+                        <li><a href="results.html">Results</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@sankalpshiksha.com</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Delhi, India</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sankalp Shiksha Test Portal. All rights reserved.</p>
+                <p>Designed for students, by educators.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
