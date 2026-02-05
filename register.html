@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Sankalp Shiksha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #87CEEB 0%, #B0E2FF 50%, #87CEEB 100%);
+        }
+        
+        .auth-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .auth-logo {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .auth-body {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1a3c6e;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.95rem;
+        }
+        
+        .auth-link {
+            color: #9b59b6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-auth {
+            width: 100%;
+            justify-content: center;
+            padding: 15px;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            border: none;
+        }
+        
+        .btn-auth:hover {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+        }
+        
+        .user-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .user-type-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .user-type-btn.active {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .terms-checkbox input {
+            margin-top: 3px;
+        }
+        
+        .terms-link {
+            color: #9b59b6;
+            text-decoration: none;
+        }
+        
+        .terms-link:hover {
+            text-decoration: underline;
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .strength-weak {
+            color: #e74c3c;
+        }
+        
+        .strength-medium {
+            color: #f39c12;
+        }
+        
+        .strength-strong {
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h1>Sankalp Shiksha</h1>
+                <p>Create Your Account</p>
+            </div>
+            
+            <div class="auth-body">
+                <form id="registerForm">
+                    <!-- User Type Selection -->
+                    <div class="user-type-selector">
+                        <button type="button" class="user-type-btn active" data-role="student">
+                            <i class="fas fa-user-graduate"></i> Student
+                        </button>
+                        <button type="button" class="user-type-btn" data-role="teacher">
+                            <i class="fas fa-chalkboard-teacher"></i> Teacher
+                        </button>
+                        <button type="button" class="user-type-btn" data-role="parent">
+                            <i class="fas fa-users"></i> Parent
+                        </button>
+                    </div>
+                    <input type="hidden" id="userRole" name="role" value="student">
+                    
+                    <!-- Name Fields -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" class="form-label">First Name *</label>
+                            <input type="text" id="firstName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" class="form-label">Last Name *</label>
+                            <input type="text" id="lastName" class="form-input" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input type="email" id="email" class="form-input" required placeholder="you@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mobile" class="form-label">Mobile Number *</label>
+                        <input type="tel" id="mobile" class="form-input" required placeholder="10-digit mobile number">
+                    </div>
+                    
+                    <!-- For Students -->
+                    <div id="studentFields">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fatherName" class="form-label">Father's Name</label>
+                                <input type="text" id="fatherName" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="class" class="form-label">Class</label>
+                                <select id="class" class="form-input">
+                                    <option value="">Select Class</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="10">Class 10</option>
+                                    <option value="11">Class 11</option>
+                                    <option value="12">Class 12</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="school" class="form-label">School Name</label>
+                            <input type="text" id="school" class="form-input" placeholder="Your school name">
+                        </div>
+                    </div>
+                    
+                    <!-- Password Fields -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" class="form-input" required>
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirm Password *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirmPassword" class="form-input" required>
+                            <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="terms.html" class="terms-link">Terms of Service</a> and <a href="privacy.html" class="terms-link">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-auth">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html" class="auth-link">Login here</a></p>
+                    <p>Are you a teacher? <a href="teacher-register.html" class="auth-link">Teacher Registration</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // User type selection
+        document.querySelectorAll('.user-type-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.user-type-btn').forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Update hidden input
+                const role = this.getAttribute('data-role');
+                document.getElementById('userRole').value = role;
+                
+                // Show/hide student-specific fields
+                const studentFields = document.getElementById('studentFields');
+                if (role === 'student') {
+                    studentFields.style.display = 'block';
+                } else {
+                    studentFields.style.display = 'none';
+                }
+            });
+        });
+        
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('confirmPassword');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthElement = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthElement.textContent = '';
+                strengthElement.className = 'password-strength';
+                return;
+            }
+            
+            let strength = 0;
+            let message = '';
+            let className = '';
+            
+            // Check password length
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            
+            // Check for uppercase letters
+            if (/[A-Z]/.test(password)) strength++;
+            
+            // Check for lowercase letters
+            if (/[a-z]/.test(password)) strength++;
+            
+            // Check for numbers
+            if (/[0-9]/.test(password)) strength++;
+            
+            // Check for special characters
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            // Determine strength level
+            if (strength <= 2) {
+                message = 'Weak password';
+                className = 'strength-weak';
+            } else if (strength <= 4) {
+                message = 'Medium password';
+                className = 'strength-medium';
+            } else {
+                message = 'Strong password';
+                className = 'strength-strong';
+            }
+            
+            strengthElement.textContent = message;
+            strengthElement.className = `password-strength ${className}`;
+        });
+        
+        // Handle form submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = document.getElementById('userRole').value;
+            
+            // Validate password match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Validate mobile number
+            const mobileRegex = /^\d{10}$/;
+            if (!mobileRegex.test(mobile)) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+            
+            // Get additional fields based on role
+            let additionalData = {};
+            if (role === 'student') {
+                additionalData = {
+                    fatherName: document.getElementById('fatherName').value,
+                    class: document.getElementById('class').value,
+                    school: document.getElementById('school').value
+                };
+            }
+            
+            // Create user object
+            const userData = {
+                name: `${firstName} ${lastName}`,
+                email: email,
+                mobile: mobile,
+                password: password,
+                role: role,
+                ...additionalData
+            };
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Check if user already exists
+                const existingUser = users.find(u => u.email === email);
+                if (existingUser) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    alert('An account with this email already exists');
+                    return;
+                }
+                
+                // Create new user
+                const newUser = {
+                    id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    ...userData,
+                    createdAt: new Date().toISOString(),
+                    isActive: true
+                };
+                
+                // Save user
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Automatically log in the user
+                const { password, ...userWithoutPassword } = newUser;
+                localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+                
+                // Show success message
+                alert('Account created successfully! Redirecting to dashboard...');
+                
+                // Redirect to dashboard
+                window.location.href = 'index.html';
+            }, 1500);
+        });
+        
+        // Check if already logged in
+        if (localStorage.getItem('currentUser')) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
