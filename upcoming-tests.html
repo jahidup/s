@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Tests - Sankalp Shiksha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+        
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .countdown-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 2px solid #f0f0f0;
+            transition: transform 0.3s ease;
+        }
+        
+        .countdown-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .countdown-card.featured {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, #fff8e1 0%, #fff3e0 100%);
+        }
+        
+        .countdown-title {
+            font-size: 1.2rem;
+            color: #1a3c6e;
+            margin-bottom: 15px;
+        }
+        
+        .countdown-timer {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .countdown-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .reminder-btn {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .reminder-btn:hover {
+            background: #e67e22;
+        }
+        
+        .reminder-btn.active {
+            background: #27ae60;
+        }
+        
+        .test-schedule {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .schedule-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            color: #1a3c6e;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .schedule-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .schedule-table tr:hover {
+            background: #f5f7fa;
+        }
+        
+        .test-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .status-scheduled {
+            background: #e8f4fc;
+            color: #2a8bf2;
+        }
+        
+        .status-urgent {
+            background: #ffebee;
+            color: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .status-today {
+            background: #e7f5e9;
+            color: #27ae60;
+        }
+        
+        .calendar-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .calendar-container {
+            margin-top: 20px;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            padding: 15px 10px;
+            font-weight: 600;
+            color: #1a3c6e;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .calendar-date {
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .calendar-date:hover {
+            background: #e8f4fc;
+        }
+        
+        .calendar-date.today {
+            background: #2a8bf2;
+            color: white;
+        }
+        
+        .calendar-date.has-test {
+            background: #fff3e0;
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        .calendar-date.has-test::after {
+            content: '📝';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .calendar-date.multiple-tests {
+            background: #ffebee;
+            color: #e74c3c;
+        }
+        
+        .calendar-date.multiple-tests::after {
+            content: '📚';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .test-notification {
+            background: #e8f4fc;
+            border-left: 4px solid #2a8bf2;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notification-content h4 {
+            margin: 0 0 5px 0;
+            color: #1a3c6e;
+        }
+        
+        .notification-content p {
+            margin: 0;
+            color: #666;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="https://via.placeholder.com/40x40/1a6fc4/ffffff?text=S" alt="Sankalp Shiksha Logo">
+                    <div class="logo-text">
+                        <h2>Sankalp Shiksha</h2>
+                        <p>Test Portal</p>
+                    </div>
+                </a>
+                
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="live-tests.html"><i class="fas fa-play-circle"></i> Live Tests</a></li>
+                        <li><a href="upcoming-tests.html" class="active"><i class="fas fa-calendar-alt"></i> Upcoming</a></li>
+                        <li><a href="tests.html"><i class="fas fa-list"></i> All Tests</a></li>
+                        <li><a href="results.html"><i class="fas fa-chart-line"></i> Results</a></li>
+                        <li class="dropdown">
+                            <a href="#"><i class="fas fa-user"></i> John Doe <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="profile.html"><i class="fas fa-user-circle"></i> My Profile</a></li>
+                                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                                <li><hr></li>
+                                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <div class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Upcoming Tests</h1>
+            <p class="page-subtitle">Schedule and prepare for your upcoming examinations</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Countdown Section -->
+            <div class="countdown-grid">
+                <!-- Next Test Countdown -->
+                <div class="countdown-card featured">
+                    <h3 class="countdown-title">Next Test</h3>
+                    <p>Physics Monthly Test</p>
+                    <div class="countdown-timer" id="nextTestCountdown">2d 05:30:15</div>
+                    <div class="countdown-label">Starts in</div>
+                    <button class="reminder-btn" id="setReminder">
+                        <i class="far fa-bell"></i> Set Reminder
+                    </button>
+                </div>
+                
+                <!-- Week Ahead -->
+                <div class="countdown-card">
+                    <h3 class="countdown-title">This Week</h3>
+                    <p>3 Tests Scheduled</p>
+                    <div class="countdown-timer">5</div>
+                    <div class="countdown-label">Days in Week</div>
+                    <a href="#weekSchedule" class="btn btn-outline" style="margin-top: 15px;">
+                        View Schedule
+                    </a>
+                </div>
+                
+                <!-- Month Overview -->
+                <div class="countdown-card">
+                    <h3 class="countdown-title">This Month</h3>
+                    <p>12 Tests Total</p>
+                    <div class="countdown-timer">15</div>
+                    <div class="countdown-label">Days Remaining</div>
+                    <a href="#monthCalendar" class="btn btn-outline" style="margin-top: 15px;">
+                        View Calendar
+                    </a>
+                </div>
+            </div>
+
+            <!-- Test Notification -->
+            <div class="test-notification">
+                <div class="notification-content">
+                    <h4><i class="fas fa-bell"></i> Test Tomorrow</h4>
+                    <p>Physics Monthly Test is scheduled for tomorrow at 10:00 AM. Don't forget to prepare!</p>
+                </div>
+                <button class="btn btn-primary">
+                    <i class="fas fa-book"></i> Study Now
+                </button>
+            </div>
+
+            <!-- Test Schedule -->
+            <div class="test-schedule" id="weekSchedule">
+                <h2>Weekly Schedule</h2>
+                <p>Your test schedule for the next 7 days</p>
+                
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Test Name</th>
+                            <th>Subject</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Tomorrow, 10:00 AM</strong><br>
+                                <small>Dec 11, 2024</small>
+                            </td>
+                            <td>Physics Monthly Test</td>
+                            <td>Physics</td>
+                            <td>90 mins</td>
+                            <td><span class="test-status status-urgent">Tomorrow</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-book"></i> Prepare
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <strong>Dec 13, 2:00 PM</strong><br>
+                                <small>2 days from now</small>
+                            </td>
+                            <td>Chemistry Quiz</td>
+                            <td>Chemistry</td>
+                            <td>45 mins</td>
+                            <td><span class="test-status status-scheduled">Scheduled</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-info-circle"></i> Details
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <strong>Dec 15, 11:00 AM</strong><br>
+                                <small>4 days from now</small>
+                            </td>
+                            <td>Mathematics Weekly Test</td>
+                            <td>Mathematics</td>
+                            <td>60 mins</td>
+                            <td><span class="test-status status-scheduled">Scheduled</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-calendar-plus"></i> Remind
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <strong>Dec 16, 3:00 PM</strong><br>
+                                <small>5 days from now</small>
+                            </td>
+                            <td>English Grammar Test</td>
+                            <td>English</td>
+                            <td>50 mins</td>
+                            <td><span class="test-status status-scheduled">Scheduled</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-book"></i> Prepare
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <strong>Dec 18, 9:00 AM</strong><br>
+                                <small>7 days from now</small>
+                            </td>
+                            <td>Science Revision Test</td>
+                            <td>Science</td>
+                            <td>75 mins</td>
+                            <td><span class="test-status status-scheduled">Scheduled</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-info-circle"></i> Details
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="text-center mt-30">
+                    <a href="#" class="btn btn-outline">
+                        <i class="fas fa-download"></i> Download Schedule
+                    </a>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="calendar-section" id="monthCalendar">
+                <h2>Test Calendar - December 2024</h2>
+                <p>View all your scheduled tests for the month</p>
+                
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <h3>December 2024</h3>
+                        <div class="calendar-nav">
+                            <button class="btn btn-outline btn-sm"><i class="fas fa-chevron-left"></i> Prev</button>
+                            <button class="btn btn-outline btn-sm">Today</button>
+                            <button class="btn btn-outline btn-sm">Next <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid">
+                        <div class="calendar-day">Sun</div>
+                        <div class="calendar-day">Mon</div>
+                        <div class="calendar-day">Tue</div>
+                        <div class="calendar-day">Wed</div>
+                        <div class="calendar-day">Thu</div>
+                        <div class="calendar-day">Fri</div>
+                        <div class="calendar-day">Sat</div>
+                        
+                        <!-- Calendar dates would be generated by JavaScript -->
+                        <div class="calendar-date">1</div>
+                        <div class="calendar-date">2</div>
+                        <div class="calendar-date has-test">3</div>
+                        <div class="calendar-date">4</div>
+                        <div class="calendar-date">5</div>
+                        <div class="calendar-date">6</div>
+                        <div class="calendar-date">7</div>
+                        <div class="calendar-date">8</div>
+                        <div class="calendar-date multiple-tests">9</div>
+                        <div class="calendar-date today">10</div>
+                        <div class="calendar-date has-test">11</div>
+                        <div class="calendar-date">12</div>
+                        <div class="calendar-date has-test">13</div>
+                        <div class="calendar-date">14</div>
+                        <div class="calendar-date has-test">15</div>
+                        <div class="calendar-date has-test">16</div>
+                        <div class="calendar-date">17</div>
+                        <div class="calendar-date has-test">18</div>
+                        <div class="calendar-date">19</div>
+                        <div class="calendar-date">20</div>
+                        <div class="calendar-date">21</div>
+                        <div class="calendar-date">22</div>
+                        <div class="calendar-date">23</div>
+                        <div class="calendar-date">24</div>
+                        <div class="calendar-date">25</div>
+                        <div class="calendar-date">26</div>
+                        <div class="calendar-date">27</div>
+                        <div class="calendar-date">28</div>
+                        <div class="calendar-date">29</div>
+                        <div class="calendar-date">30</div>
+                        <div class="calendar-date">31</div>
+                    </div>
+                </div>
+                
+                <div class="calendar-legend mt-30">
+                    <h4>Legend:</h4>
+                    <div class="legend-items">
+                        <span class="legend-item"><span class="legend-color" style="background: #2a8bf2;"></span> Today</span>
+                        <span class="legend-item"><span class="legend-color" style="background: #fff3e0;"></span> 1 Test</span>
+                        <span class="legend-item"><span class="legend-color" style="background: #ffebee;"></span> Multiple Tests</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preparation Tips -->
+            <div class="test-schedule">
+                <h2>Preparation Tips</h2>
+                <p>Get ready for your upcoming tests with these tips</p>
+                
+                <div class="tips-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div class="tip-card">
+                        <div class="tip-icon" style="background: #e8f4fc; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: #2a8bf2;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4>Time Management</h4>
+                        <p>Allocate specific time slots for each subject. Use Pomodoro technique for focused study sessions.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon" style="background: #e7f5e9; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: #27ae60;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h4>Revision Strategy</h4>
+                        <p>Revise important formulas and concepts daily. Make summary notes for quick revision.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon" style="background: #fff3e0; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: #f39c12;">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4>Practice Tests</h4>
+                        <p>Take practice tests under exam conditions. Analyze your performance and focus on weak areas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sankalp Shiksha</h3>
+                    <p>Empowering students through quality education and assessment since 2010.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Dashboard</a></li>
+                        <li><a href="live-tests.html">Live Tests</a></li>
+                        <li><a href="upcoming-tests.html">Upcoming Tests</a></li>
+                        <li><a href="results.html">Results</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@sankalpshiksha.com</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Delhi, India</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sankalp Shiksha Test Portal. All rights reserved.</p>
+                <p>Designed for students, by educators.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Countdown timer for next test
+        function updateCountdown() {
+            const countdownElement = document.getElementById('nextTestCountdown');
+            if (!countdownElement) return;
+            
+            // Set target date (tomorrow 10:00 AM)
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(10, 0, 0, 0);
+            
+            const timeRemaining = tomorrow - now;
+            
+            if (timeRemaining <= 0) {
+                countdownElement.textContent = "Test Started!";
+                return;
+            }
+            
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            countdownElement.textContent = `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Set reminder functionality
+        const reminderBtn = document.getElementById('setReminder');
+        if (reminderBtn) {
+            reminderBtn.addEventListener('click', function() {
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    this.innerHTML = '<i class="far fa-bell"></i> Set Reminder';
+                    showNotification('Reminder removed', 'info');
+                } else {
+                    this.classList.add('active');
+                    this.innerHTML = '<i class="fas fa-bell"></i> Reminder Set';
+                    showNotification('Reminder set for tomorrow\'s test', 'success');
+                    
+                    // Request notification permission
+                    if ('Notification' in window && Notification.permission === 'default') {
+                        Notification.requestPermission();
+                    }
+                }
+            });
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? '#27ae60' : type === 'error' ? '#e74c3c' : '#3498db'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Initialize calendar
+        function initializeCalendar() {
+            const calendarGrid = document.querySelector('.calendar-grid');
+            if (!calendarGrid) return;
+            
+            // Add click events to dates with tests
+            const testDates = calendarGrid.querySelectorAll('.has-test, .multiple-tests');
+            testDates.forEach(date => {
+                date.addEventListener('click', function() {
+                    const dateNum = this.textContent;
+                    alert(`Tests scheduled on December ${dateNum}, 2024. Check the schedule for details.`);
+                });
+            });
+        }
+        
+        initializeCalendar();
+        
+        // Check if user is logged in
+        if (!localStorage.getItem('currentUser')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
