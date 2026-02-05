@@ -1,0 +1,91 @@
+/* Responsive Design */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .links-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .main-nav ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .main-nav.active ul {
+        display: flex;
+    }
+    
+    .mobile-toggle {
+        display: block;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .links-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .test-item {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .test-meta {
+        justify-content: center;
+    }
+    
+    .welcome-section {
+        padding: 20px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .links-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .calendar-grid {
+        gap: 5px;
+    }
+    
+    .calendar-date {
+        padding: 8px 5px;
+        font-size: 0.9rem;
+    }
+}
